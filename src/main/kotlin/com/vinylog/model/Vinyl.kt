@@ -3,12 +3,7 @@ package com.vinylog.model
 import com.vinylog.enums.Cover
 import com.vinylog.enums.VinylSize
 import com.vinylog.enums.VinylType
-import jakarta.persistence.Entity
-import jakarta.persistence.Enumerated
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.*
 
 @Entity
 data class Vinyl(
@@ -22,13 +17,13 @@ data class Vinyl(
     var recordCompany: String,
     var color: String,
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     var vinylSize: VinylSize = VinylSize.TEN,
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     var cover: Cover = Cover.SIMPLE,
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     var vinylType: VinylType = VinylType.SIMPLE,
 
     @ManyToOne
