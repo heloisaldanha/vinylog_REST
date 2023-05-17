@@ -1,0 +1,1 @@
+INSERT INTO user_client values(1, 'Heloisa', 'heloisa@email.com');
