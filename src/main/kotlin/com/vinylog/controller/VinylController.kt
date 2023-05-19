@@ -3,7 +3,6 @@ package com.vinylog.controller
 import com.vinylog.dto.VinylInputDto
 import com.vinylog.dto.VinylOutputDto
 import com.vinylog.dto.VinylUpdateDto
-import com.vinylog.model.Vinyl
 import com.vinylog.service.VinylService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -46,10 +45,10 @@ class VinylController(
         return ResponseEntity.created(uri).body(vinylOutputDto)
     }
 
-    @PutMapping("/editar-vinil")
+    @PutMapping("/editar-vinil/{id}")
     @Transactional
-    fun update(@RequestBody @Valid vinyl: VinylUpdateDto): ResponseEntity<VinylOutputDto> {
-        val vinylOutput = service.update(vinyl)
+    fun update(@PathVariable id: Long, @RequestBody @Valid vinyl: VinylUpdateDto): ResponseEntity<VinylOutputDto> {
+        val vinylOutput = service.update(id, vinyl)
         return ResponseEntity.ok(vinylOutput)
     }
 
