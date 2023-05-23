@@ -18,9 +18,14 @@ class VinylService(
     private val vinylMapper: VinylMapper
 ) {
 
-    fun getVinylList(): List<VinylOutputDto> {
+    fun getVinylList(
+        artist: String?
+    ): List<VinylOutputDto> {
         println("Mostrando lista de vinis")
-        return repository.findAll().stream().map { v -> vinylOutputMapper.map(v) }.collect(Collectors.toList())
+
+        val vinyls = if(artist.isNullOrBlank()) repository.findAll() else repository.findByArtist(artist)
+
+        return vinyls.stream().map { v -> vinylOutputMapper.map(v) }.collect(Collectors.toList())
     }
 
     fun getById(id: Long): VinylOutputDto {
