@@ -5,7 +5,6 @@ import com.vinylog.dto.VinylOutputDto
 import com.vinylog.dto.VinylUpdateDto
 import com.vinylog.mapper.VinylMapper
 import com.vinylog.mapper.VinylOutputMapper
-import com.vinylog.model.Vinyl
 import com.vinylog.repository.VinylRepository
 import exception.NotFoundException
 import org.springframework.stereotype.Service
@@ -19,9 +18,14 @@ class VinylService(
     private val vinylMapper: VinylMapper
 ) {
 
-    fun getVinylList(): List<VinylOutputDto> {
+    fun getVinylList(
+        artist: String?
+    ): List<VinylOutputDto> {
         println("Mostrando lista de vinis")
-        return repository.findAll().stream().map { v -> vinylOutputMapper.map(v) }.collect(Collectors.toList())
+
+        val vinyls = if(artist.isNullOrBlank()) repository.findAll() else repository.findByArtist(artist)
+
+        return vinyls.stream().map { v -> vinylOutputMapper.map(v) }.collect(Collectors.toList())
     }
 
     fun getById(id: Long): VinylOutputDto {
@@ -39,9 +43,9 @@ class VinylService(
         return vinylOutputMapper.map(vinyl)
     }
 
-    fun update(update: VinylUpdateDto): VinylOutputDto {
+    fun update(id: Long, update: VinylUpdateDto): VinylOutputDto {
         println("Atualizando um vinil")
-        val vinyl = repository.findById(update.id).orElseThrow {
+        val vinyl = repository.findById(id).orElseThrow {
             NotFoundException("Vinil não encontrado")
         }
         vinyl.artist = update.artist
